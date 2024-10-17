@@ -3,7 +3,8 @@ package com.javaweb.service.impl;
 import com.javaweb.converter.BuildingConverter;
 import com.javaweb.entity.BuildingEntity;
 import com.javaweb.entity.UserEntity;
-import com.javaweb.model.dto.AssignmentBuildingDTO;
+
+import com.javaweb.model.dto.AssignmentDTO;
 import com.javaweb.model.dto.BuildingDTO;
 import com.javaweb.model.request.BuildingSearchRequest;
 import com.javaweb.model.response.BuildingSearchResponse;
@@ -70,7 +71,7 @@ public class BuildingService implements IBuildingService {
         }
         if(buildingDTO.getId()!=null){
             BuildingEntity oldBuilding = buildingRepository.getOne(buildingDTO.getId());
-            buildingEntity.setStaffs(oldBuilding.getStaffs());
+            buildingEntity.setStaffsBuilding(oldBuilding.getStaffsBuilding());
             buildingEntity.setImage(oldBuilding.getImage());
         }
         saveThumbnail(buildingDTO,buildingEntity);
@@ -106,13 +107,13 @@ public class BuildingService implements IBuildingService {
     }
 
     @Override
-    public void assignmentBuilding(AssignmentBuildingDTO assignmentBuildingDTO) {
-        BuildingEntity buildingEntity = buildingRepository.getOne(assignmentBuildingDTO.getBuildingId());
-        if(assignmentBuildingDTO.getStaffs()!=null && assignmentBuildingDTO.getStaffs().size()>0) {
-            buildingEntity.setStaffs(userRepository.findByIdIn(assignmentBuildingDTO.getStaffs()));
+    public void assignmentBuilding(AssignmentDTO assignmentDTO) {
+        BuildingEntity buildingEntity = buildingRepository.getOne(assignmentDTO.getId());
+        if(assignmentDTO.getStaffs()!=null && assignmentDTO.getStaffs().size()>0) {
+            buildingEntity.setStaffsBuilding(userRepository.findByIdIn(assignmentDTO.getStaffs()));
         }
         else {
-            buildingEntity.setStaffs(null);
+            buildingEntity.setStaffsBuilding(null);
         }
     }
 
@@ -126,8 +127,9 @@ public class BuildingService implements IBuildingService {
         if(buildingRepository.getOne(id) == null){
             return false;
         }
-        List<UserEntity> staffs = buildingRepository.getOne(id).getStaffs();
-        if(staffs == null || staffs.size() == 0){
+        List<UserEntity> staffs = buildingRepository.getOne(id).getStaffsBuilding()
+                ;
+        if(staffs == null || staffs.isEmpty()){
             return false;
         }
         List<Long> staffIds = staffs.stream().map(user -> user.getId()).collect(Collectors.toList());

@@ -1,6 +1,7 @@
 package com.javaweb.service;
 
-import com.javaweb.model.dto.AssignmentBuildingDTO;
+import com.javaweb.entity.UserEntity;
+
 import com.javaweb.model.dto.PasswordDTO;
 import com.javaweb.model.dto.UserDTO;
 import com.javaweb.exception.MyException;
@@ -13,6 +14,7 @@ import java.util.Map;
 
 public interface IUserService {
     UserDTO findOneByUserNameAndStatus(String name, int status);
+    UserEntity findById(Long id);
     List<UserDTO> getUsers(String searchValue, Pageable pageable);
     int getTotalItems(String searchValue);
     UserDTO findOneByUserName(String userName);
@@ -28,4 +30,6 @@ public interface IUserService {
     int countTotalItems();
     Map<Long,String> getStaffs();
     List<StaffResponseDTO> getAllStaffs(Long buildingId);
+    List<StaffResponseDTO> getAllCustomerStaffs(Long customerId);
 }
+

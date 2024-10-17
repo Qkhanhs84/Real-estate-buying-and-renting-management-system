@@ -3,6 +3,7 @@ package com.javaweb.service.impl;
 import com.javaweb.constant.SystemConstant;
 import com.javaweb.converter.UserConverter;
 import com.javaweb.entity.BuildingEntity;
+import com.javaweb.entity.CustomerEntity;
 import com.javaweb.model.dto.PasswordDTO;
 import com.javaweb.model.dto.UserDTO;
 import com.javaweb.entity.RoleEntity;
@@ -10,6 +11,7 @@ import com.javaweb.entity.UserEntity;
 import com.javaweb.exception.MyException;
 import com.javaweb.model.response.StaffResponseDTO;
 import com.javaweb.repository.BuildingRepository;
+import com.javaweb.repository.CustomerRepository;
 import com.javaweb.repository.RoleRepository;
 import com.javaweb.repository.UserRepository;
 import com.javaweb.service.IUserService;
@@ -41,11 +43,18 @@ public class UserService implements IUserService {
     private UserConverter userConverter;
     @Autowired
     private BuildingRepository buildingRepository;
+    @Autowired
+    private CustomerRepository customerRepository;
 
 
     @Override
     public UserDTO findOneByUserNameAndStatus(String name, int status) {
         return userConverter.convertToDto(userRepository.findOneByUserNameAndStatus(name, status));
+    }
+
+    @Override
+    public UserEntity findById(Long id) {
+        return userRepository.getOne(id);
     }
 
     @Override
@@ -100,10 +109,27 @@ public class UserService implements IUserService {
         List<StaffResponseDTO> result = new ArrayList<>();
         List<UserEntity> staffs = userRepository.findByStatusAndRoles_Code(1, "staff");
         BuildingEntity buildingEntity = buildingRepository.getOne(buildingId);
-        List<UserEntity> staffOfBuilding = buildingEntity.getStaffs();
+        List<UserEntity> staffOfBuilding = buildingEntity.getStaffsBuilding();
         for(UserEntity staff : staffs){
             String checked = "" ;
             if(staffOfBuilding.contains(staff)){
+                checked = "checked" ;
+            }
+            result.add(userConverter.convertToStaffResponseDTO(staff,checked));
+
+        }
+        return result;
+    }
+
+    @Override
+    public List<StaffResponseDTO> getAllCustomerStaffs(Long customerId) {
+        List<StaffResponseDTO> result = new ArrayList<>();
+        List<UserEntity> staffs = userRepository.findByStatusAndRoles_Code(1, "staff");
+        CustomerEntity customerEntity = customerRepository.getOne(customerId);
+        List<UserEntity> staffOfCustomer = customerEntity.getStaffsCustomer();
+        for(UserEntity staff : staffs){
+            String checked = "" ;
+            if(staffOfCustomer.contains(staff)){
                 checked = "checked" ;
             }
             result.add(userConverter.convertToStaffResponseDTO(staff,checked));

@@ -31,7 +31,7 @@
 		<div class="row navbar">
 			<div class="col-12 col-md-3">
 				<div class="logo">
-					<a href="">
+					<a href="/trang-chu">
 						<img src="https://bizweb.dktcdn.net/100/328/362/themes/894751/assets/logo.png?1676257083798"
 							 alt="">
 					</a>
@@ -83,6 +83,9 @@
 						<li class="nav-item"><a class="nav-link" href="#">Đăng ký</a></li>
 					</security:authorize>
 					<security:authorize access = "isAuthenticated()">
+						<security:authorize access = "hasRole('MANAGER')">
+							<li class="nav-item"><a class="nav-link" href='/admin/home'>Quản trị</a></li>
+						</security:authorize>
 						<li class="nav-item"><a class="nav-link" href="#"> Xin chào <%=SecurityUtils.getPrincipal().getUsername()%></a></li>
 						<li class="nav-item"><a class="nav-link" href="<c:url value='/logout'/>">Thoát</a></li>
 					</security:authorize>

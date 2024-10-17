@@ -119,15 +119,15 @@
                     <form>
                         <div class="row">
                             <div class="col">
-                                <input type="text" class="form-control" placeholder="Họ và tên">
+                                <input type="text" id="name" class="form-control" placeholder="Họ và tên">
                             </div>
                             <div class="col">
-                                <input type="text" class="form-control" placeholder="Email">
+                                <input type="text" id = "email" class="form-control" placeholder="Email">
                             </div>
                         </div>
-                        <input type="text" class="form-control mt-3" placeholder="Số điện thoại">
-                        <input type="text" class="form-control mt-3" placeholder="Nội dung">
-                        <button class="btn btn-primary px-4 mt-3">
+                        <input type="text" id="phone" class="form-control mt-3" placeholder="Số điện thoại">
+                        <input type="text" id = "demand" class="form-control mt-3" placeholder="Nội dung">
+                        <button class="btn btn-primary px-4 mt-3" onclick="sendContact()">
                             Gửi liên hệ
                         </button>
                     </form>
@@ -235,5 +235,43 @@
 </div>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+<script>
+    function sendContact() {
+        var data = {};
+        var name = document.getElementById("name").value;
+        var email = document.getElementById("email").value;
+        var phone = document.getElementById("phone").value;
+        var demand = document.getElementById("demand").value;
+
+        if(name == "" ) {
+            alert("Vui lòng nhập tên");
+            return ;
+        }
+        if(phone == ""){
+            alert("Vui lòng nhập số điện thoại");
+            return ;
+        }
+        data['fullName'] = name;
+        data['email'] = email;
+        data['phone'] = phone;
+        data['demand'] = demand;
+        data['status'] = 'Chưa xử lý';
+        sendContactAjax(data);
+    }
+    function sendContactAjax(data){
+        $.ajax({
+            type: "POST",
+            url: "/api/customers",
+            data: JSON.stringify(data),
+            contentType: "application/json",
+            success: function () {
+                alert("Gửi liên hệ thành công");
+            },
+            error: function () {
+                alert("Gửi liên hệ thất bại");
+            }
+        });
+    }
+</script>
 </body>
 </html>

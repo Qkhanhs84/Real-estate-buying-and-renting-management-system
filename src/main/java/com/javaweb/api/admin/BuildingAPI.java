@@ -4,7 +4,8 @@ import com.javaweb.converter.BuildingConverter;
 import com.javaweb.entity.BuildingEntity;
 import com.javaweb.entity.RentAreaEntity;
 import com.javaweb.entity.UserEntity;
-import com.javaweb.model.dto.AssignmentBuildingDTO;
+
+import com.javaweb.model.dto.AssignmentDTO;
 import com.javaweb.model.dto.BuildingDTO;
 import com.javaweb.model.response.ResponseDTO;
 import com.javaweb.model.response.StaffResponseDTO;
@@ -53,7 +54,7 @@ public class BuildingAPI {
     }
 
     @PostMapping("/staffs")
-    public void updateAssignmentBuilding(@RequestBody AssignmentBuildingDTO assignmentBuildingDTO){
-        buildingService.assignmentBuilding(assignmentBuildingDTO);
+    public void updateAssignmentBuilding(@RequestBody AssignmentDTO assignmentDTO){
+        buildingService.assignmentBuilding(assignmentDTO);
     }
 }

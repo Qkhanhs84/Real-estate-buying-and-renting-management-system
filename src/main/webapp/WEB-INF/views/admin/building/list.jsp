@@ -403,7 +403,7 @@
     $('#btnAssignmentBuilding').click(function (e) {
         e.preventDefault(); // -> tranh truong hop load lại trang nhiều lần
         var data = {};
-        data['buildingId'] = $('#buildingId').val();
+        data['Id'] = $('#buildingId').val();
         var staffs = $('#staffList').find('tbody input[type=checkbox]:checked').map(function () {
             return $(this).val();
         }).get();
