@@ -138,6 +138,16 @@ public class UserService implements IUserService {
         return result;
     }
 
+    @Override
+    public void register(UserDTO userDTO) {
+        UserEntity userEntity = userConverter.convertToEntity(userDTO);
+        userEntity.setStatus(1);
+        userEntity.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+        RoleEntity role = roleRepository.findOneByCode("customer");
+        userEntity.setRoles(Stream.of(role).collect(Collectors.toList()));
+        userRepository.save(userEntity);
+    }
+
 
     @Override
     public int getTotalItems(String searchValue) {

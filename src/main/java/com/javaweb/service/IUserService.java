@@ -31,5 +31,6 @@ public interface IUserService {
     Map<Long,String> getStaffs();
     List<StaffResponseDTO> getAllStaffs(Long buildingId);
     List<StaffResponseDTO> getAllCustomerStaffs(Long customerId);
+    void register(UserDTO userDTO);
 }
 

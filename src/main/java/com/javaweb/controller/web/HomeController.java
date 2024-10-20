@@ -69,4 +69,9 @@ public class HomeController {
 		}
 		return new ModelAndView("redirect:/trang-chu");
 	}
+    @RequestMapping(value = "/signup", method = RequestMethod.GET)
+    public ModelAndView signup() {
+        ModelAndView mav = new ModelAndView("signup");
+        return mav;
+    }
 }

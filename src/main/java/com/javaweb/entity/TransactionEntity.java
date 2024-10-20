@@ -23,4 +23,5 @@ public class TransactionEntity extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "staffid")
     private UserEntity userEntity;
+
 }

@@ -7,7 +7,15 @@ import com.javaweb.model.dto.UserDTO;
 import com.javaweb.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import java.lang.reflect.Field;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/user")
@@ -53,5 +61,26 @@ public class UserAPI {
             userService.delete(idList);
         }
         return ResponseEntity.noContent().build();
+    }
+    @PostMapping("/register")
+    @Transactional
+    public ResponseEntity<?> register(@Valid @RequestBody UserDTO userDTO , BindingResult result){
+
+        try{
+            if(result.hasErrors()){
+                List<String> errorMessages = result.getFieldErrors()
+                        .stream()
+                        .map(FieldError::getDefaultMessage)
+                        .collect(Collectors.toList());
+                return ResponseEntity.badRequest().body("errorMessages");
+            }
+            if(!userDTO.getPassword().equals(userDTO.getRetypePassword())) {
+                return ResponseEntity.badRequest().body("Password not match");
+            }
+            userService.register(userDTO);
+            return ResponseEntity.ok("REGISTER SUCCESSFULLY") ;
+        }catch (Exception e){
+            return ResponseEntity.badRequest().body("Username already exists");
+        }
     }
 }

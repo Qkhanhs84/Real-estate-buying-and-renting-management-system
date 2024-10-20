@@ -36,18 +36,20 @@ public class TransactionService implements ITransactionService {
     public void addOrUpdateTransaction(TransactionDTO transactionDTO) {
         TransactionEntity transactionEntity ;
         if(transactionDTO.getId() != null){
+            transactionEntity = modelMapper.map(transactionDTO, TransactionEntity.class);
             TransactionEntity oldTransaction = transactionRepository.getOne(transactionDTO.getId());
-            oldTransaction.setNote(transactionDTO.getNote());
-            oldTransaction.setModifiedBy(transactionDTO.getModifiedBy());
-            oldTransaction.setModifiedDate(transactionDTO.getModifiedDate());
-            transactionEntity = oldTransaction;
-
+            transactionEntity.setCreatedDate(oldTransaction.getCreatedDate());
+            transactionEntity.setCreatedBy(oldTransaction.getCreatedBy());
         }
         else {
+
             transactionEntity = modelMapper.map(transactionDTO, TransactionEntity.class);
-            CustomerEntity customerEntity = customerService.getCustomerById(transactionDTO.getCustomerId());
-            transactionEntity.setCustomerEntity(customerEntity);
+
+
+
         }
+        CustomerEntity customerEntity = customerService.getCustomerById(transactionDTO.getCustomerId());
+        transactionEntity.setCustomerEntity(customerEntity);
         UserEntity userEntity = userService.findById(transactionDTO.getStaffId());
         transactionEntity.setUserEntity(userEntity);
         transactionRepository.save(transactionEntity);

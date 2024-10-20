@@ -69,14 +69,12 @@ public class CustomerService implements ICustomerService {
     @Override
     public void deleteCustomer(List<Long> ids) {
         if(ids!=null && !ids.isEmpty()){
-            for(Long id:ids){
-                CustomerEntity customerEntity = customerRepository.getOne(id);
-                System.out.println(customerEntity.getId());
-                customerEntity.setStaffsCustomer(null);
-                customerEntity.getTransactionEntities().clear();
+            List<CustomerEntity> customerEntities = customerRepository.findByIdIn(ids);
+            List<CustomerEntity> result = customerEntities.stream().map(customerEntity -> {
                 customerEntity.setIsActive(0);
-                customerRepository.save(customerEntity);
-            }
+                return customerEntity;
+            }).collect(Collectors.toList());
+            customerRepository.saveAll(result);
         }
     }
 

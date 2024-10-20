@@ -40,5 +40,10 @@ public class BaseEntity implements Serializable {
     @LastModifiedBy
     private String modifiedBy;
 
+    @PrePersist
+    public void onPrePersist() {
+        this.modifiedDate = null;  // Không thiết lập giá trị cho modifiedDate khi thêm mới
+        this.modifiedBy = null;    // Không thiết lập giá trị cho modifiedBy khi thêm mới
+    }
 
 }

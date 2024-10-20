@@ -153,7 +153,7 @@
                                         <td class="center">${it.modifiedBy}</td>
                                         <td class="center">${it.note}</td>
                                         <td class="center">
-                                            <button onclick="openModelFadeEdit(${it.id},'${it.note}')"
+                                            <button onclick="openModelFadeEdit(${it.id},'${it.note}','${item.key}',${customer.id})"
                                                     class="btn btn-xs btn-info">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                                      fill="currentColor" class="bi bi-pencil-square"
@@ -211,7 +211,7 @@
                                         <td class="center">${it.modifiedBy}</td>
                                         <td class="center">${it.note}</td>
                                         <td class="center">
-                                            <button onclick="openModelFadeEdit(${it.id},'${it.note}')"
+                                            <button onclick="openModelFadeEdit(${it.id},'${it.note}','${item.key}',${customer.id})"
                                                     class="btn btn-xs btn-info">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                                      fill="currentColor" class="bi bi-pencil-square"
@@ -312,8 +312,10 @@
     }
 
 
-    function openModelFadeEdit(id, str) {
+    function openModelFadeEdit(id, str,code,customerId) {
         $('#id').val(id);
+        $('#code').val(code);
+        $('#customerId').val(customerId);
         checkAddOrUpdate(str);
 
         $('#editTransaction').modal();
