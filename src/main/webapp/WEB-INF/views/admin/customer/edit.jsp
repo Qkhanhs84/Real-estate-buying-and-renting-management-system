@@ -337,12 +337,13 @@
             url: "/api/transactions",
             data: JSON.stringify(json),
             contentType: "application/json",
-            success: function () {
-                alert("Create or Update Transaction Successfully");
+            dataType: "json",
+            success: function (response) {
+                alert(response.message);
                 window.location.replace("/admin/customer-edit-${customer.id}");
             },
-            error: function () {
-                alert("Create or Update Transaction Failed");
+            error: function (response) {
+                alert(response.responseJSON.detail);
             }
         })
     }
@@ -351,12 +352,13 @@
         $.ajax({
             type: "DELETE",
             url: "/api/transactions/" + id,
-            success: function () {
-                alert("Delete Transaction Successfully");
+            dataType: "json",
+            success: function (response) {
+                alert(response.message);
                 window.location.replace("/admin/customer-edit-${customer.id}");
             },
-            error: function () {
-                alert("Delete Transaction Failed");
+            error: function (response) {
+                alert(response.responseJSON.message);
             }
         })
     }
@@ -389,13 +391,14 @@
             url: "/api/customers",
             data: JSON.stringify(data),
             contentType: "application/json",
-            success: function () {
-                alert("Create or Update Customer Successfully");
+            dataType: "json",
+            success: function (response) {
+                alert(response.message);
                 window.location.replace("/admin/customer-list");
             },
-            error: function () {
+            error: function (response) {
 
-                alert("Create or Update Building Failed");
+                alert(response.responseJSON.detail);
             }
         })
     }

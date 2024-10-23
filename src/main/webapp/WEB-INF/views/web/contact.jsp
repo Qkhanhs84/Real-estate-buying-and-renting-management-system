@@ -74,17 +74,17 @@
                 </div>
                 <div class="col-12 col-md-6">
                     <h2 class="title-lienhe"><strong>Liên hệ với chúng tôi</strong></h2>
-                    <form>
+                    <form id = "formData">
                         <div class="row">
                             <div class="col">
-                                <input type="text" id="name" class="form-control" placeholder="Họ và tên">
+                                <input type="text" id="fullName" name = "fullName" class="form-control" placeholder="Họ và tên">
                             </div>
                             <div class="col">
-                                <input type="text" id="email" class="form-control" placeholder="Email">
+                                <input type="text" id="email" name = "email" class="form-control" placeholder="Email">
                             </div>
                         </div>
-                        <input type="text" id="phone" class="form-control mt-3" placeholder="Số điện thoại">
-                        <input type="text" id="demand" class="form-control mt-3" placeholder="Nội dung">
+                        <input type="text" id="phone" name="phone" class="form-control mt-3" placeholder="Số điện thoại">
+                        <input type="text" id="demand" name = "demand" class="form-control mt-3" placeholder="Nội dung">
                         <button class="btn btn-primary px-4 mt-3" id="sendContactBtn" type="button"
                         onclick="sendContact()">
                             Gửi liên hệ
@@ -204,23 +204,19 @@
 
 
         var data = {};
-        var name = document.getElementById("name").value;
-        var email = document.getElementById("email").value;
-        var phone = document.getElementById("phone").value;
-        var demand = document.getElementById("demand").value;
+        var formData = $('#formData').serializeArray();
 
-        if (name == "") {
+        if (formData['fullName'] == "") {
             alert("Vui lòng nhập tên");
             return;
         }
-        if (phone == "") {
+        if (formData['phone'] == "") {
             alert("Vui lòng nhập số điện thoại");
             return;
         }
-        data['fullName'] = name;
-        data['email'] = email;
-        data['phone'] = phone;
-        data['demand'] = demand;
+        $.each(formData, function (index, field) {
+            data[field.name] = field.value;
+        });
         data['status'] = 'Chưa xử lý';
         sendContactAjax(data);
     }

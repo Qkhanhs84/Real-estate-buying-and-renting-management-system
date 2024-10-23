@@ -8,7 +8,7 @@ import com.javaweb.model.dto.PasswordDTO;
 import com.javaweb.model.dto.UserDTO;
 import com.javaweb.entity.RoleEntity;
 import com.javaweb.entity.UserEntity;
-import com.javaweb.exception.MyException;
+import com.javaweb.exception.DataNotFoundExecption;
 import com.javaweb.model.response.StaffResponseDTO;
 import com.javaweb.repository.BuildingRepository;
 import com.javaweb.repository.CustomerRepository;
@@ -125,7 +125,7 @@ public class UserService implements IUserService {
     public List<StaffResponseDTO> getAllCustomerStaffs(Long customerId) {
         List<StaffResponseDTO> result = new ArrayList<>();
         List<UserEntity> staffs = userRepository.findByStatusAndRoles_Code(1, "staff");
-        CustomerEntity customerEntity = customerRepository.getOne(customerId);
+        CustomerEntity customerEntity = customerRepository.findById(customerId).orElseThrow(()-> new DataNotFoundExecption("Customer not found"));
         List<UserEntity> staffOfCustomer = customerEntity.getStaffsCustomer();
         for(UserEntity staff : staffs){
             String checked = "" ;
@@ -204,14 +204,14 @@ public class UserService implements IUserService {
 
     @Override
     @Transactional
-    public void updatePassword(long id, PasswordDTO passwordDTO) throws MyException {
+    public void updatePassword(long id, PasswordDTO passwordDTO) throws DataNotFoundExecption {
         UserEntity user = userRepository.findById(id).get();
         if (passwordEncoder.matches(passwordDTO.getOldPassword(), user.getPassword())
                 && passwordDTO.getNewPassword().equals(passwordDTO.getConfirmPassword())) {
             user.setPassword(passwordEncoder.encode(passwordDTO.getNewPassword()));
             userRepository.save(user);
         } else {
-            throw new MyException(SystemConstant.CHANGE_PASSWORD_FAIL);
+            throw new DataNotFoundExecption(SystemConstant.CHANGE_PASSWORD_FAIL);
         }
     }
 

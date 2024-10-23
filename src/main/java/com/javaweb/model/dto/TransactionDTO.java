@@ -8,9 +8,10 @@ import javax.validation.constraints.NotBlank;
 @Setter
 @Getter
 public class TransactionDTO extends AbstractDTO<TransactionDTO> {
-    private Long id;
+
 
     private String code;
+    @NotBlank
     private String note;
 
     private Long customerId;

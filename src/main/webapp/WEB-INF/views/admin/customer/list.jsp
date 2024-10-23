@@ -294,8 +294,8 @@
 
             },
             error: function (response) {
-                alert("Load Staffs Failed")
-                console.log(response);
+                alert(response.responseJSON.message);
+
             }
 
 
@@ -319,15 +319,15 @@
             type: "POST",
             url: "${customerAPI}staffs",
             data: JSON.stringify(data),
-
             contentType: "application/json",
-            success: function () {
-                alert("Assign Successfully");
+            dataType: "json",
+            success: function (response) {
+                alert(response.message);
                 location.reload();
             },
             error: function (response) {
 
-                alert("Assign Failed");
+                alert(response.responseJSON.message);
             }
 
         });
@@ -357,14 +357,14 @@
             type: "DELETE",
             url: "${customerAPI}" + data['ids'],
             data: JSON.stringify(data),
-
             contentType: "application/json",
-            success: function () {
-                alert("Deleted Successfully");
+            dataType: "json",
+            success: function (response) {
+                alert(response.message);
                 location.reload();
             },
-            error: function () {
-                alert("Deleted Failed");
+            error: function (response) {
+                alert(response.responseJSON.message);
             }
 
         });

@@ -8,4 +8,5 @@ import java.util.List;
 public interface TransactionRepository extends JpaRepository<TransactionEntity, Long>
 {
     List<TransactionEntity> findByCodeAndCustomerEntity_Id(String code, Long customerId);
+    boolean existsById(Long id);
 }

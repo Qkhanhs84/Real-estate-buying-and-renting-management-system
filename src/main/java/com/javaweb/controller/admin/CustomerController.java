@@ -4,6 +4,7 @@ package com.javaweb.controller.admin;
 import com.javaweb.entity.CustomerEntity;
 import com.javaweb.enums.status;
 import com.javaweb.enums.transaction;
+import com.javaweb.model.dto.CustomerDTO;
 import com.javaweb.model.request.CustomerSearchRequest;
 import com.javaweb.security.utils.SecurityUtils;
 import com.javaweb.service.ICustomerService;
@@ -41,7 +42,7 @@ public class CustomerController {
         return modelAndView;
     }
     @GetMapping("/admin/customer-edit")
-    public ModelAndView customerEdit(@ModelAttribute(name = "customer")CustomerEntity customerEntity){
+    public ModelAndView customerEdit(@ModelAttribute(name = "customer") CustomerDTO customerDTO){
         ModelAndView modelAndView = new ModelAndView("admin/customer/edit");
         modelAndView.addObject("status", status.getStatus());
         return modelAndView;
@@ -55,8 +56,8 @@ public class CustomerController {
         }
         ModelAndView modelAndView = new ModelAndView("admin/customer/edit");
         modelAndView.addObject("status", status.getStatus());
-        CustomerEntity customerEntity = customerService.getCustomerById(id);
-        modelAndView.addObject("customer", customerEntity);
+        CustomerDTO customerDTO = customerService.getCustomerDTOById(id);
+        modelAndView.addObject("customer", customerDTO);
         modelAndView.addObject("transactions", transaction.getTransaction());
         modelAndView.addObject("CSKH",transactionService.findByCodeAndCustomerId("CSKH",id));
         modelAndView.addObject("DDX",transactionService.findByCodeAndCustomerId("DDX",id));

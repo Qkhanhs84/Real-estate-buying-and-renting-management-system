@@ -4,8 +4,7 @@ import com.javaweb.entity.UserEntity;
 
 import com.javaweb.model.dto.PasswordDTO;
 import com.javaweb.model.dto.UserDTO;
-import com.javaweb.exception.MyException;
-import com.javaweb.model.response.ResponseDTO;
+import com.javaweb.exception.DataNotFoundExecption;
 import com.javaweb.model.response.StaffResponseDTO;
 import org.springframework.data.domain.Pageable;
 
@@ -21,7 +20,7 @@ public interface IUserService {
     UserDTO findUserById(long id);
     UserDTO insert(UserDTO userDTO);
     UserDTO update(Long id, UserDTO userDTO);
-    void updatePassword(long id, PasswordDTO userDTO) throws MyException;
+    void updatePassword(long id, PasswordDTO userDTO) throws DataNotFoundExecption;
     UserDTO resetPassword(long id);
     UserDTO updateProfileOfUser(String id, UserDTO userDTO);
     void delete(long[] ids);

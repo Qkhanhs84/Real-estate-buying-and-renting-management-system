@@ -1,7 +1,7 @@
 package com.javaweb.api.admin;
 
 import com.javaweb.constant.SystemConstant;
-import com.javaweb.exception.MyException;
+import com.javaweb.exception.DataNotFoundExecption;
 import com.javaweb.model.dto.PasswordDTO;
 import com.javaweb.model.dto.UserDTO;
 import com.javaweb.service.IUserService;
@@ -13,7 +13,6 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.lang.reflect.Field;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -39,7 +38,7 @@ public class UserAPI {
         try {
             userService.updatePassword(id, passwordDTO);
             return ResponseEntity.ok(SystemConstant.UPDATE_SUCCESS);
-        } catch (MyException e) {
+        } catch (DataNotFoundExecption e) {
             //LOGGER.error(e.getMessage());
             return ResponseEntity.ok(e.getMessage());
         }

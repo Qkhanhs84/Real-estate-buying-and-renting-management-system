@@ -3,6 +3,7 @@ package com.javaweb.service.impl;
 import com.javaweb.entity.CustomerEntity;
 import com.javaweb.entity.TransactionEntity;
 import com.javaweb.entity.UserEntity;
+import com.javaweb.exception.DataNotFoundExecption;
 import com.javaweb.model.dto.TransactionDTO;
 import com.javaweb.repository.TransactionRepository;
 import com.javaweb.service.ICustomerService;
@@ -35,20 +36,15 @@ public class TransactionService implements ITransactionService {
     @Override
     public void addOrUpdateTransaction(TransactionDTO transactionDTO) {
         TransactionEntity transactionEntity ;
+        transactionEntity = modelMapper.map(transactionDTO, TransactionEntity.class);
         if(transactionDTO.getId() != null){
-            transactionEntity = modelMapper.map(transactionDTO, TransactionEntity.class);
+
             TransactionEntity oldTransaction = transactionRepository.getOne(transactionDTO.getId());
             transactionEntity.setCreatedDate(oldTransaction.getCreatedDate());
             transactionEntity.setCreatedBy(oldTransaction.getCreatedBy());
         }
-        else {
 
-            transactionEntity = modelMapper.map(transactionDTO, TransactionEntity.class);
-
-
-
-        }
-        CustomerEntity customerEntity = customerService.getCustomerById(transactionDTO.getCustomerId());
+        CustomerEntity customerEntity = customerService.getCustomerEntityById(transactionDTO.getCustomerId());
         transactionEntity.setCustomerEntity(customerEntity);
         UserEntity userEntity = userService.findById(transactionDTO.getStaffId());
         transactionEntity.setUserEntity(userEntity);
@@ -57,6 +53,9 @@ public class TransactionService implements ITransactionService {
 
     @Override
     public void deleteTransaction(Long id) {
+        if(!transactionRepository.existsById(id)){
+            throw new DataNotFoundExecption("Transaction not found");
+        }
         transactionRepository.deleteById(id);
     }
 
