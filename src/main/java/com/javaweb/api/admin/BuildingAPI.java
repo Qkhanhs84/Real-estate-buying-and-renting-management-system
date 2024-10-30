@@ -15,12 +15,19 @@ import com.javaweb.repository.UserRepository;
 import com.javaweb.service.IBuildingService;
 import com.javaweb.service.impl.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @RestController
 @RequestMapping("/api/buildings")
@@ -35,8 +42,24 @@ public class BuildingAPI {
     private UserService userService;
 
     @PostMapping
-    public void createOrUpdateBuilding(@RequestBody BuildingDTO buildingDTO){
-        buildingService.createOrUpdateBuilding(buildingDTO);
+    public ResponseEntity<?> createOrUpdateBuilding(@Valid @RequestBody BuildingDTO buildingDTO, BindingResult bindingResult){
+        try {
+            ResponseDTO responseDTO = new ResponseDTO();
+            if(bindingResult.hasErrors()){
+                responseDTO.setMessage("Error");
+                List<String> errors = bindingResult.getFieldErrors().stream().map(FieldError::getDefaultMessage).collect(Collectors.toList());
+                responseDTO.setDetail(errors);
+                return ResponseEntity.badRequest().body(responseDTO);
+            }
+            buildingService.createOrUpdateBuilding(buildingDTO);
+            responseDTO.setMessage("Success");
+            return ResponseEntity.ok(responseDTO);
+        }catch (Exception e){
+            ResponseDTO responseDTO = new ResponseDTO();
+            responseDTO.setMessage("Error");
+            responseDTO.setDetail(Stream.of(e.getMessage()).collect(Collectors.toList()));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseDTO);
+        }
 
     }
 

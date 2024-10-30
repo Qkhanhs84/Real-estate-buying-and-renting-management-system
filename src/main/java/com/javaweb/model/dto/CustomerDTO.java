@@ -10,9 +10,9 @@ import javax.validation.constraints.Size;
 @Getter
 @Setter
 public class CustomerDTO extends AbstractDTO{
-    @NotBlank
+    @NotBlank(message = "Full name is required")
     private String fullName;
-    @Size(min = 10 , max = 11)
+    @Size(min = 10 , max = 11,message = "Phone number must be 10 or 11 digits")
     private String phone;
     private String email;
     private String demand;

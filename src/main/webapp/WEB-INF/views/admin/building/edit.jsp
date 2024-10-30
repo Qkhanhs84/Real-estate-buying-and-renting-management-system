@@ -300,15 +300,20 @@
             type:"POST" ,
             url : "/api/buildings" ,
             data : JSON.stringify(data) ,
-
             contentType : "application/json" ,
-            success : function(){
-                alert("Create or Update Building Successfully") ;
+            dataType : "json" ,
+            success : function(response){
+                alert(response.message) ;
                 window.location.replace("/admin/building-list") ;
             },
-            error : function(){
+            error : function(response){
+                if(response.responseJSON.detail){
+                    alert(response.responseJSON.detail) ;
+                }
+                if(response.responseJSON.error){
+                    alert(response.responseJSON.error) ;
+                }
 
-                alert("Create or Update Building Failed") ;
             }
 
         }) ;

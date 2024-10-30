@@ -11,7 +11,7 @@ public class TransactionDTO extends AbstractDTO<TransactionDTO> {
 
 
     private String code;
-    @NotBlank
+    @NotBlank(message = "Note is required")
     private String note;
 
     private Long customerId;

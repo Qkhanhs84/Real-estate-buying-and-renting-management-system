@@ -45,7 +45,7 @@ public class CustomerAPI {
                 List<String> errors = bindingResult.getFieldErrors().stream().
                         map(FieldError::getDefaultMessage).collect(Collectors.toList());
                 responseDTO.setDetail(errors);
-                throw new DataNotFoundExecption("Error");
+                return ResponseEntity.badRequest().body(responseDTO);
 
             }
             customerService.createOrUpdateCustomer(customerDTO);
